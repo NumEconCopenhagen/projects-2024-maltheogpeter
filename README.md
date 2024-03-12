@@ -1,8 +1,8 @@
 # \[Group name\]
 
 **Group members:**
-- A
-- B
+- Malthe Thomassen KHR273
+- Peter Skjærbæk
 - C
 
 This repository contains  
