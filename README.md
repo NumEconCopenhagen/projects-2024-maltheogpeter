@@ -1,9 +1,8 @@
-# \[Group name\]
+# Malthe&Peter
 
 **Group members:**
-- Malthe Thomassen KHR273
+- Malthe Thomassen
 - Peter Skjærbæk
-- C
 
 This repository contains  
 1. Inaugural project. 
