@@ -1,4 +1,5 @@
 # Inaugural project
+This is and introduction to our InauguralProject2024 where we solve a simple Economic Model 
 
 The **results** of the project can be seen from running [inauguralproject.ipynb](inauguralproject.ipynb).
 
