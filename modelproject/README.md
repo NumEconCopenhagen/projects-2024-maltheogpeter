@@ -1,6 +1,6 @@
 # Model analysis project
 
-Our project is titled **The AD-AS model** and is about the solution and dynamics of the AD-AS model with Aggregate Demand, Long Run Supply and Short Run Supply. 
+Our project is titled **AD-AS model** and is about the aggregate demand and aggregate supply model which is a model that describes the relationship between inflation and output
 
 The **results** of the project can be seen from running [modelproject.ipynb](modelproject.ipynb). Our **model** is written in [modelproject.py]
 
