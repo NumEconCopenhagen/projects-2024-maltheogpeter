@@ -37,7 +37,7 @@ class ADASModel:
 
     def aggregate_demand(self, inflation):
         inflation_gap = self.foreign_inflation - inflation
-        interest_diff = self.foreign_interest_rate - self.foreign_real_interest_rate
+        interest_diff = self.foreign_interest_rate -0 - self.foreign_real_interest_rate
         z_t = self.calculate_z_t(self.potential_output)
 
         # Incorporate the demand shock directly into the output gap
