@@ -68,7 +68,6 @@ class ADASModel:
         plt.axvline(x=self.potential_output, label="LRAS", color="black", linestyle=":")
         plt.xlabel("Output (Y)")
         plt.ylabel("Inflation (π)")
-        plt.legend()
         plt.grid(True)
         plt.title("AD-AS Model (Analytical Solution)")
         plt.show()
