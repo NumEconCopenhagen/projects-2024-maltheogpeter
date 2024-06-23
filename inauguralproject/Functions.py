@@ -144,23 +144,23 @@ class ExchangeEconomyClass:
         
         return price_1, utility_1, x1A_allocation, x2A_allocation
  
- #Optimal p1 with p1 as market setter, undbounded   
-    def maximize_utility_A_unbounded(self):
-        def negative_utility_A(p1):
+ #Optimal p1 with p1 as market setter, bounded   
+    def maximize_utility_A_ubounded(self, p1_values=np.linspace(0.0, 100.0, 75)):
+        utility_1 = -np.inf
+        price_1 = None
+        
+        for p1 in p1_values:
             demand_B_x1, demand_B_x2 = self.demand_B(p1)
             if 1 - demand_B_x1 > 0 and 1 - demand_B_x2 > 0:
-                return -self.utility_A(1 - demand_B_x1, 1 - demand_B_x2)
-            else:
-                return np.inf  # Return a very high value if the allocation is not feasible
-
-        result = minimize_scalar(negative_utility_A, bounds=(1e-3, 1e3), method='bounded')
+                utilitymax_A = self.utility_A(1 - demand_B_x1, 1 - demand_B_x2)
+                if utilitymax_A > utility_1:
+                    utility_1 = utilitymax_A
+                    price_1 = p1
         
-        optimal_p1 = result.x
-        optimal_utility_A = -result.fun
-        x1A_allocation = 1 - self.demand_B(optimal_p1)[0]
-        x2A_allocation = 1 - self.demand_B(optimal_p1)[1]
-
-        return optimal_p1, optimal_utility_A, x1A_allocation, x2A_allocation
+        x1A_allocation = 1 - self.demand_B(price_1)[0]
+        x2A_allocation = 1 - self.demand_B(price_1)[1]
+        
+        return price_1, utility_1, x1A_allocation, x2A_allocation
 
 
     def find_optimal_price(self, price_range):
