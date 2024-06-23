@@ -65,4 +65,30 @@ def histogram_rate(merged_df):
     plt.savefig('rate_histogram.png')
     plt.show()
 
+# Create a figure and a set of subplots
+def plot_inflation_rate_money_supply(dataset_2010_2023):
+    fig, ax1 = plt.subplots(figsize=(12, 8))
+
+    # Plot inflation and interest rate on the left y-axis
+    ax1.plot(dataset_2010_2023['DATE'], dataset_2010_2023['inflation'], color='b', label='Inflation')
+    ax1.plot(dataset_2010_2023['DATE'], dataset_2010_2023['rate'], color='r', label='Interest Rate')
+    ax1.set_xlabel('Date')
+    ax1.set_ylabel('Inflation and Interest Rate', color='k')
+    ax1.tick_params(axis='y', labelcolor='k')
+
+    # Create a second y-axis for the money supply
+    ax2 = ax1.twinx()
+    ax2.plot(dataset_2010_2023['DATE'], dataset_2010_2023['money_supply_pct_change'], color='g', label='Money Supply Change')
+    ax2.set_ylabel('Money Supply Change (%)', color='k')
+    ax2.tick_params(axis='y', labelcolor='k')
+
+    # Add a legend
+    lines_1, labels_1 = ax1.get_legend_handles_labels()
+    lines_2, labels_2 = ax2.get_legend_handles_labels()
+    ax1.legend(lines_1 + lines_2, labels_1 + labels_2, loc='upper left')
+
+    # Show the plot
+    plt.title('Inflation, Interest Rate, and Money Supply Change (2010-2023)')
+    plt.show()
+
 
