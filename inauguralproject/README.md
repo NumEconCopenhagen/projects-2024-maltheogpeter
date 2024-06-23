@@ -1,5 +1,5 @@
 # Inaugural project
-This is and introduction to our InauguralProject2024 where we solve a simple Economic Model. The model that we solve is an Exchange Economy where we go through some simple exercises.
+This is an introduction to our InauguralProject2024 where we solve a simple Economic Model. The model that we solve is an Exchange Economy where we go through some simple exercises.
 
 The project is made by 
 - Malthe Thomassen 

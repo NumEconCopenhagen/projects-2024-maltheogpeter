@@ -1,16 +1,68 @@
-def keep_regs(df, regs):
-    """ Example function. Keep only the subset regs of regions in data.
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
-    Args:
-        df (pd.DataFrame): pandas dataframe 
 
-    Returns:
-        df (pd.DataFrame): pandas dataframe
-
-    """ 
+def plot_inflation_vs_rate_over_time(merged_df):
+    # Line plot for inflation and federal funds rate over time
+    plt.figure(figsize=(12, 6))
+    plt.plot(merged_df['DATE'], merged_df['inflation'], label='Inflation', color='blue')
+    plt.plot(merged_df['DATE'], merged_df['rate'], label='Federal Funds Rate', color='red')
     
-    for r in regs:
-        I = df.reg.str.contains(r)
-        df = df.loc[I == False] # keep everything else
-    
-    return df
+    # Set date format on x-axis
+    ax = plt.gca()
+    ax.xaxis.set_major_locator(mdates.YearLocator(5))  # Major ticks every 5 years
+    ax.xaxis.set_minor_locator(mdates.YearLocator(1))  # Minor ticks every year
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
+
+    # Enable the grid for minor ticks
+    ax.grid(which='both', linestyle='--', linewidth=0.5)
+    ax.tick_params(which='both', width=1)
+    ax.tick_params(which='major', length=7)
+    ax.tick_params(which='minor', length=4, color='gray')
+
+    plt.xlabel('Date')
+    plt.ylabel('Percentage')
+    plt.title('Inflation vs Federal Funds Rate Over Time')
+    plt.legend()
+    plt.xticks(rotation=45)  # Rotate x-axis labels for better readability
+    plt.tight_layout()  # Adjust layout to make room for x-axis labels
+    plt.savefig('line_plot.png')
+    plt.show()
+
+
+
+def plot_inflation_vs_rate_scatter(merged_df):
+    # Scatter plot for inflation vs federal funds rate
+    plt.figure(figsize=(8, 6))
+    plt.scatter(merged_df['inflation'], merged_df['rate'], color='purple')
+    plt.xlabel('Inflation')
+    plt.ylabel('Federal Funds Rate')
+    plt.title('Inflation vs Federal Funds Rate')
+    plt.grid(True)
+    plt.savefig('scatter_plot.png')
+    plt.show()
+
+# Histogram for inflation and federal funds rate
+def histogram_inflation_rate(merged_df):
+    plt.figure(figsize=(6, 3))
+    plt.hist(merged_df['inflation'], bins=30, color='blue', alpha=0.7)
+    plt.xlabel('Inflation')
+    plt.ylabel('Frequency')
+    plt.title('Histogram of Inflation')
+    plt.grid(True)
+    plt.savefig('inflation_histogram.png')
+    plt.show()
+
+    # Histogram for federal funds rate
+def histogram_rate(merged_df):
+    plt.figure(figsize=(6, 3))
+    plt.hist(merged_df['rate'], bins=30, color='red', alpha=0.7)
+    plt.xlabel('Federal Funds Rate')
+    plt.ylabel('Frequency')
+    plt.title('Histogram of Federal Funds Rate')
+    plt.grid(True)
+    plt.savefig('rate_histogram.png')
+    plt.show()
+
+
