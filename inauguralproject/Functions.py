@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt  
 import scipy.optimize as optimize
 import seaborn as sns
+from scipy.optimize import minimize
 from scipy.optimize import minimize_scalar
 class ExchangeEconomyClass:
 
@@ -30,10 +31,10 @@ class ExchangeEconomyClass:
         return x1B, x2B
     
     def utility_A(self, x1A, x2A):
-        return x1A**self.par.alpha * x2A**(1 - self.par.alpha)
+        return (x1A**self.par.alpha) * x2A**(1 - self.par.alpha)
 
     def utility_B(self, x1B, x2B):
-        return x1B**self.par.beta * x2B**(1 - self.par.beta)
+        return (x1B**self.par.beta) * (x2B**(1 - self.par.beta))
     
     def demand_A_x1(self, p1):
         return self.par.alpha * (p1 * self.par.w1A + self.par.p2 * self.par.w2A) / p1
@@ -126,6 +127,7 @@ class ExchangeEconomyClass:
     def optimize_price_3(self):
         result = optimize.minimize_scalar(self.abs_error, bounds=(0.5, 2.5), method='bounded')
         return result.x
+
 #Optimal p1 with p1 as market setter
     def maximize_utility_A_via_grid_search_4A(self, p1_values=np.linspace(0.5, 2.5, 75)):
         utility_1 = -np.inf
@@ -144,23 +146,31 @@ class ExchangeEconomyClass:
         
         return price_1, utility_1, x1A_allocation, x2A_allocation
  
- #Optimal p1 with p1 as market setter, bounded   
-    def maximize_utility_A_ubounded(self, p1_values=np.linspace(0.0, 100.0, 75)):
-        utility_1 = -np.inf
-        price_1 = None
+# Finding the allocation with any positive price to maximize A's utility
+    def maximize_utility_A_unrestricted(self):
+        def objective(p1):
+            x1B, x2B = self.demand_B(p1)
+            x1A = 1 - x1B
+            x2A = 1 - x2B
+            return -self.utility_A(x1A, x2A)  # Negative because we are maximizing
+
+        constraints = ({
+            'type': 'ineq',
+            'fun': lambda p1: 1 - self.demand_B(p1)[1]  # Ensure x2A is non-negative
+        }, {
+            'type': 'ineq',
+            'fun': lambda p1: 1 - self.demand_B(p1)[0]  # Ensure x1A is non-negative
+        })
+
+        result = minimize(objective, x0=1, bounds=[(1e-3, 1e3)], constraints=constraints, method='SLSQP')
+        optimal_p1 = result.x[0]
+        x1B, x2B = self.demand_B(optimal_p1)
+        x1A = 1 - x1B
+        x2A = 1 - x2B
+        utility_A = self.utility_A(x1A, x2A)
+        utility_B = self.utility_B(x1B, x2B)
         
-        for p1 in p1_values:
-            demand_B_x1, demand_B_x2 = self.demand_B(p1)
-            if 1 - demand_B_x1 > 0 and 1 - demand_B_x2 > 0:
-                utilitymax_A = self.utility_A(1 - demand_B_x1, 1 - demand_B_x2)
-                if utilitymax_A > utility_1:
-                    utility_1 = utilitymax_A
-                    price_1 = p1
-        
-        x1A_allocation = 1 - self.demand_B(price_1)[0]
-        x2A_allocation = 1 - self.demand_B(price_1)[1]
-        
-        return price_1, utility_1, x1A_allocation, x2A_allocation
+        return optimal_p1, x1A, x2A, x1B, x2B, utility_A, utility_B
 
 
     def find_optimal_price(self, price_range):
